@@ -24,16 +24,36 @@ namespace vending_cs.Services
       }
     }
 
+    public void AddQuarter()
+    {
+      _store.Quarters += 0.25;
+      Messages.Add(new Message("You currently have $" + _store.Quarters));
+    }
+
     public void Buy(string indexString)
     {
       if (int.TryParse(indexString, out int index) && index - 1 > -1 && index - 1 < _store.Options.Count)
       {
         Options optionToBuy = _store.Options[index - 1];
-        if (optionToBuy.IsAvailable)
+        if (_store.Quarters >= optionToBuy.Price)
         {
-          optionToBuy.IsAvailable = false;
-          Messages.Add(new Message("You purchased " + optionToBuy.Name + " for $" + optionToBuy.Price));
-          return;
+          if (optionToBuy.IsAvailable)
+          {
+            Messages.Add(new Message("Vending..."));
+            optionToBuy.IsAvailable = false;
+            Messages.Add(new Message("You purchased " + optionToBuy.Name + " for $" + optionToBuy.Price + "\n", ConsoleColor.Green));
+            _store.Quarters = _store.Quarters - optionToBuy.Price;
+            Messages.Add(new Message("You now have $" + _store.Quarters + "\n"));
+            return;
+          }
+          else
+          {
+            Messages.Add(new Message("Sorry, that item is sold out!\n", ConsoleColor.Red));
+          }
+        }
+        else
+        {
+          Messages.Add(new Message("Sorry, you don't have enough money to buy that item! \n Add more money or select a different item!", ConsoleColor.Red));
         }
       }
     }

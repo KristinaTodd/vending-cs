@@ -20,7 +20,7 @@ namespace vending_cs.Controllers
 
     private void GetUserInput()
     {
-      System.Console.WriteLine("What would you like to do? \n(browse, quit, buy)");
+      System.Console.WriteLine("What would you like to do? \n(add quarter, browse, quit, buy)");
       string input = Console.ReadLine().ToLower();
       switch (input)
       {
@@ -28,15 +28,22 @@ namespace vending_cs.Controllers
         case "exit":
         case "q":
         case "x":
+          Console.Clear();
           _running = false;
           break;
+        case "add quarter":
+          Console.Clear();
+          _vs.AddQuarter();
+          break;
         case "browse":
+          Console.Clear();
           _vs.ViewSelectionMessage();
           break;
         case "buy":
           Console.Write("Enter a vending number:");
           string indexString = Console.ReadLine();
           _vs.Buy(indexString);
+          Console.Clear();
           break;
         default:
           _vs.Messages.Add(new Message("Invalid Input"));
@@ -47,12 +54,14 @@ namespace vending_cs.Controllers
 
     private void Print()
     {
-      _vs.Messages.Insert(0, new Message(Utils.MachineLogo));
+      _vs.Messages.Insert(0, new Message(Utils.MachineLogo, ConsoleColor.Cyan));
 
       foreach (Message message in _vs.Messages)
       {
+        Console.ForegroundColor = message.Color;
         Console.WriteLine(message.Body);
       }
+      Console.ForegroundColor = ConsoleColor.White;
       _vs.Messages.Clear();
     }
   }

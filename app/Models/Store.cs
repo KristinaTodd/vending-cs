@@ -5,6 +5,7 @@ namespace vending_cs.Models
   class Store
   {
     public List<Options> Options { get; set; }
+    public double Quarters { get; set; }
 
     public Store()
     {
