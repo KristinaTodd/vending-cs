@@ -13,6 +13,7 @@ namespace vending_cs.Controllers
     {
       while (_running)
       {
+
         GetUserInput();
         Print();
       }
@@ -20,7 +21,7 @@ namespace vending_cs.Controllers
 
     private void GetUserInput()
     {
-      System.Console.WriteLine("What would you like to do? \n(add quarter, browse, quit, buy)");
+      System.Console.WriteLine("What would you like to do? \n(add quarter, browse, buy, quit)");
       string input = Console.ReadLine().ToLower();
       switch (input)
       {
